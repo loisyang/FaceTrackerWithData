@@ -50,7 +50,7 @@ void setup() {
 
   dataFile = createWriter("data.txt");
   dataFile.println(day+"/"+month+"/"+year);
-  dataFile.println("timestamp\t"+"FaceTracked\t"+"mouthHeight\t");
+  dataFile.println("timestamp\t"+"Tracked\t"+"EyebrowL"+"  EyebrowR"+"  EyeL"+"  EyeR"+"  Jaw"+"  Nostrils"+"  Scale"+"  CenterXY\t"+"OrientationXYZ\t"+"  MouthW\t"+" MouthH\t");
 
   oscP5 = new OscP5(this, 8338);
   oscP5.plug(this, "found", "/found");
@@ -83,7 +83,7 @@ void draw() {
     dataFile.println(currentTime+"\t"+found);
   }
   else if(found > 0) {
-    dataFile.println(currentTime+"\t"+found + "\t" + mouthHeight);
+    dataFile.println(currentTime+"\t"+found+"\t"+eyebrowLeft+"\t"+eyebrowRight+"\t"+eyeLeft+"\t"+eyeRight+"\t"+jaw+"\t"+nostrils+"\t"+poseScale+"\t"+posePosition+"\t"+poseOrientation+"\t"+mouthWidth+"\t" + mouthHeight);
     translate(posePosition.x, posePosition.y);
     scale(poseScale);
     noFill();
@@ -109,57 +109,57 @@ public void found(int i) {
 
 public void poseScale(float s) {
   println("scale: " + s);
-  poseScale = s;
+  poseScale = float(nfc(s,4));
 }
 
 public void posePosition(float x, float y) {
   println("pose position\tX: " + x + " Y: " + y );
-  posePosition.set(x, y, 0);
+  posePosition.set(float(nfc(x,2)),float(nfc(y,2)),0);
 }
 
 public void poseOrientation(float x, float y, float z) {
   println("pose orientation\tX: " + x + " Y: " + y + " Z: " + z);
-  poseOrientation.set(x, y, z);
+  poseOrientation.set(float(nfc(x,3)),float(nfc(y,3)),float(nfc(z,3)));
 }
 
 public void mouthWidthReceived(float w) {
   println("mouth Width: " + w);
-  mouthWidth = w;
+  mouthWidth = float(nfc(w,3));
 }
 
 public void mouthHeightReceived(float h) {
   println("mouth height: " + h);
-  mouthHeight = h;
+  mouthHeight = float(nfc(h,3));
 }
 
 public void eyeLeftReceived(float f) {
   println("eye left: " + f);
-  eyeLeft = f;
+  eyeLeft = float(nfc(f,3));
 }
 
 public void eyeRightReceived(float f) {
   println("eye right: " + f);
-  eyeRight = f;
+  eyeRight = float(nfc(f,3));
 }
 
 public void eyebrowLeftReceived(float f) {
   println("eyebrow left: " + f);
-  eyebrowLeft = f;
+  eyebrowLeft = float(nfc(f,3));
 }
 
 public void eyebrowRightReceived(float f) {
   println("eyebrow right: " + f);
-  eyebrowRight = f;
+  eyebrowRight = float(nfc(f,3));
 }
 
 public void jawReceived(float f) {
   println("jaw: " + f);
-  jaw = f;
+  jaw = float(nfc(f,3));
 }
 
 public void nostrilsReceived(float f) {
   println("nostrils: " + f);
-  nostrils = f;
+  nostrils = float(nfc(f,3));
 }
 
 // all other OSC messages end up here
